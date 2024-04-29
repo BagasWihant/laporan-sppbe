@@ -28,7 +28,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::controller(MasterDataController::class)->group(function(){
-        Route::get('/dataBarang','dataBarang')->name('dataBarang');
+        Route::get('/barang','dataBarang')->name('barang');
+        Route::get('/perusahaan','dataPerusahaan')->name('perusahaan');
     });
 
 
