@@ -20,6 +20,8 @@
     },
     "dependencies": {
         "@inertiajs/vue3": "^1.0.16",
-        "@vitejs/plugin-vue": "^5.0.4"
+        "@vitejs/plugin-vue": "^5.0.4",
+        "@vueuse/core": "^10.9.0",
+        "pinia": "^2.1.7"
     }
 }
