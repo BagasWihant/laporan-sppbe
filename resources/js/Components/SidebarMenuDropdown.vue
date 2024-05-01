@@ -1,10 +1,10 @@
 <template>
-    <ul class="">
+    <ul class="bg-slate-300 rounded-2xl w-full">
         <template v-for="(childitem, index) in items" :key="index">
             <li>
                 <Link :href="childitem.route" @click="handleItemClick(index)"
-                    class="relative flex items-center gap-2.5 rounded-sm"
-                    :class="{ '!text-white': childitem.label === sidebarStore.selected }">
+                    class="relative p-3 flex items-center gap-2.5 rounded-2xl"
+                    :class="{ 'bg-slate-600 text-white': childitem.label === sidebarStore.selected }">
                 {{ childitem.label }}
                 </Link>
             </li>
@@ -22,9 +22,12 @@ const sidebarStore = useSidebarStore()
 const props = defineProps(['items', 'page'])
 const items = ref(props.items)
 
-const handleItemClick = () => {
+const handleItemClick = (index) => {
     const pageName =
         sidebarStore.selected === props.items[index].label ? '' : props.items[index].label
     sidebarStore.selected = pageName
+    sidebarStore.page = ''
+
+    console.log(props.items[index]);
 }
 </script>

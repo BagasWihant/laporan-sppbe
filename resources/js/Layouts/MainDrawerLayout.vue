@@ -56,14 +56,14 @@
             </div>
             <div class="drawer-side">
                 <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
-                <ul class="menu p-4 w-72 min-h-full bg-base-200 text-base-content">
+                <ul class="p-4 w-72 min-h-full bg-base-300 text-base-content">
                     <!-- Sidebar content here -->
                     <div class="w-full navbar bg-slate-50 shadow-md rounded-xl">
                         <div class="w-full flex justify-center">
                             <p class="text-xl font-bold">L O G O</p>
                         </div>
                     </div>
-                    <div class="sm:-my-px sm:ml-2 flex-col flex py-5 gap-1">
+                    <div class="flex-col flex py-5 gap-1">
                         
                         <!-- <NavLink :href="route('dataBarang')" :active="route().current('dataBarang')">
                             Barang

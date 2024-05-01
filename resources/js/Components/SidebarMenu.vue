@@ -1,5 +1,5 @@
 <template>
-    <div class="menu bg-base-200 w-56 rounded-box gap-2">
+    <div class="rounded-box gap-2">
         <template v-for="menu in menuGroups" :key="menu.id">
             <h3>{{ menu.name }}</h3>
 
