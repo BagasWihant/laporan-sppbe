@@ -15,6 +15,7 @@
 import { ref } from 'vue';
 import SidebarMeniItem from './SidebarMeniItem.vue';
 
+
 const menuGroups = ref([
   {
     name: 'MENU',
@@ -35,7 +36,8 @@ const menuGroups = ref([
                   />
                 </svg>`,
         label: 'Dashboard',
-        route: 'dashboard'
+        route: 'dashboard',
+        rt: 'dashboard',
       },
       
       {
@@ -69,10 +71,11 @@ const menuGroups = ref([
                   />
                 </svg>`,
         label: 'Master',
+        rt: 'master',
         route: '#',
         child: [
-          { label: 'Data Barang', route: '/barang' },
-          { label: 'Data Perusahaan', route: '/perusahaan' }
+          { label: 'Data Barang', route: '/barang',rt:'barang' },
+          { label: 'Data Perusahaan', route: '/perusahaan',rt:'perusahaan' }
         ]
       },
       

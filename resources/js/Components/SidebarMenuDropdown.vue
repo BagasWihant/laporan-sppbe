@@ -4,7 +4,7 @@
             <li>
                 <Link :href="childitem.route" @click="handleItemClick(index)"
                     class="relative p-3 flex items-center gap-2.5 rounded-2xl"
-                    :class="{ 'bg-slate-600 text-white': childitem.label === sidebarStore.selected }">
+                    :class="{ 'bg-slate-600 text-white': childitem.rt === sidebarStore.selected }">
                 {{ childitem.label }}
                 </Link>
             </li>
@@ -24,10 +24,9 @@ const items = ref(props.items)
 
 const handleItemClick = (index) => {
     const pageName =
-        sidebarStore.selected === props.items[index].label ? '' : props.items[index].label
+        sidebarStore.selected === props.items[index].rt ? '' : props.items[index].rt
     sidebarStore.selected = pageName
     sidebarStore.page = ''
 
-    console.log(props.items[index]);
 }
 </script>
