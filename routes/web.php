@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(MasterDataController::class)->group(function(){
         Route::get('/barang','dataBarang')->name('barang');
+        Route::post('/barang','uploadDataBarang')->name('uploadBarang');
         Route::get('/perusahaan','dataPerusahaan')->name('perusahaan');
     });
 

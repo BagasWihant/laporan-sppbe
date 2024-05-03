@@ -1,4 +1,5 @@
 <template>
+    <Head title="Data Perusahaan" />
     <MainDrawerLayout>
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -11,5 +12,6 @@
 </template>
 
 <script setup>
+import { Head } from '@inertiajs/vue3';
 import MainDrawerLayout from '@/Layouts/MainDrawerLayout.vue';
 </script>
