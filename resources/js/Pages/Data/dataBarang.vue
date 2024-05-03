@@ -20,31 +20,19 @@
                             <tr>
                                 <th></th>
                                 <th>Name</th>
-                                <th>Job</th>
-                                <th>Favorite Color</th>
+                                <th>Satuan</th>
+                                <th>Stok</th>
+                                <th>Harga</th>
                             </tr>
                         </thead>
                         <tbody>
                             <!-- row 1 -->
-                            <tr>
-                                <th>1</th>
-                                <td>Cy Ganderton</td>
-                                <td>Quality Control Specialist</td>
-                                <td>Blue</td>
-                            </tr>
-                            <!-- row 2 -->
-                            <tr>
-                                <th>2</th>
-                                <td>Hart Hagerty</td>
-                                <td>Desktop Support Technician</td>
-                                <td>Purple</td>
-                            </tr>
-                            <!-- row 3 -->
-                            <tr>
-                                <th>3</th>
-                                <td>Brice Swyre</td>
-                                <td>Tax Accountant</td>
-                                <td>Red</td>
+                            <tr v-for="(dt,index) in data">
+                                <th>{{ index+1 }}</th>
+                                <th>{{ dt.nama }}</th>
+                                <th>{{  dt.satuan }}</th>
+                                <th>{{ dt.stok }}</th>
+                                <th>{{ dt.harga }}</th>
                             </tr>
                         </tbody>
                     </table>
@@ -56,12 +44,15 @@
 </template>
 
 <script setup>
-import { Head } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import MainDrawerLayout from '@/Layouts/MainDrawerLayout.vue';
 import axios from 'axios';
 import { ref } from 'vue';
 
 const file = ref("")
+defineProps({
+    data: Array
+})
 
 const pilihFile = () => {
     document.getElementById('fileUpload').click()
@@ -73,7 +64,7 @@ const uploadFiles = (event) => {
     file.value = event.target.files[0]
     formData.append("file",file.value)
     
-    axios.post('barang', formData).then(() => {
+    router.post('barang', formData).then(() => {
         console.log('nise');
     }).catch(() => {
         console.log('fauil');

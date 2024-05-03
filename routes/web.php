@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BarangController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -27,9 +28,12 @@ Route::middleware('auth')->group(function () {
         Route::delete('/profile', 'destroy')->name('profile.destroy');
     });
 
-    Route::controller(MasterDataController::class)->group(function(){
-        Route::get('/barang','dataBarang')->name('barang');
+    Route::controller(BarangController::class)->group(function(){
+        Route::get('/barang','index')->name('barang');
         Route::post('/barang','uploadDataBarang')->name('uploadBarang');
+    });
+    
+    Route::controller(MasterDataController::class)->group(function(){
         Route::get('/perusahaan','dataPerusahaan')->name('perusahaan');
     });
 
