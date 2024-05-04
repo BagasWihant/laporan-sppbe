@@ -53,7 +53,8 @@ class BarangController extends Controller
     public function search(Request $req)
     {
         $key = $req->key;
-        $data = DB::table('barangs')->select(['nama','satuan','stok','harga'])->where('nama','like',$key)->paginate(10);
+        
+        $data = DB::table('barangs')->select(['nama','satuan','stok','harga'])->where('nama','like',"%$key%")->paginate(15);
         return json_encode($data);
     }
 
