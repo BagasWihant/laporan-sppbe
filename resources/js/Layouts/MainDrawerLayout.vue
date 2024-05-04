@@ -3,9 +3,8 @@
         <div class="drawer lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
             <div class="drawer-content flex flex-col">
-                <div class="w-full navbar bg-slate-50 shadow-md px-0 sm:px-9">
-
-                    <div class="flex-none md:hidden">
+                <div class="navbar bg-slate-50 shadow-md px-0 sm:px-9 sticky top-0 z-[999]">
+                    <div class="flex-none lg:hidden">
                         <label for="my-drawer-2" aria-label="open sidebar" class="btn btn-square btn-ghost">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 class="inline-block w-6 h-6 stroke-current">
@@ -17,7 +16,7 @@
 
                     <div class="flex-1 px-2 mx-2">logo</div>
 
-                    <div class="flex-none hidden sm:block">
+                    <div class="flex-none ">
                         <ul class="menu menu-horizontal">
                             <!-- Navbar menu content here -->
 
@@ -49,7 +48,8 @@
                         </ul>
                     </div>
                 </div>
-                <main>
+
+                <main class="min-h-screen bg-slate-200 mt-11">
                     <slot />
                 </main>
 
@@ -64,7 +64,7 @@
                         </div>
                     </div>
                     <div class="flex-col flex py-5 gap-1">
-                        
+
                         <!-- <NavLink :href="route('dataBarang')" :active="route().current('dataBarang')">
                             Barang
                         </NavLink> -->

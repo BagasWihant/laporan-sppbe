@@ -30,6 +30,8 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(BarangController::class)->group(function(){
         Route::get('/barang','index')->name('barang');
+        Route::get('/showAllBarang','showAll')->name('barangShow');
+        Route::post('/cariBarang','search')->name('barangSearch');
         Route::post('/barang','uploadDataBarang')->name('uploadBarang');
     });
     

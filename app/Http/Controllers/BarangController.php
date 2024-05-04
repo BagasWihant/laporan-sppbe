@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\barang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BarangController extends Controller
 {
@@ -13,8 +14,11 @@ class BarangController extends Controller
      */
     public function index()
     {
-        $data = barang::all(['nama','satuan','stok','harga']);
-        return Inertia::render('Data/dataBarang',['data'=>$data]);
+        // $data = barang::onl()->paginate(10);
+        // $data = $this->showAll();
+        // $data = DB::table('barangs')->paginate(10);
+        
+        return Inertia::render('Data/dataBarang');
     }
 
     function uploadDataBarang(Request $req)
@@ -46,25 +50,20 @@ class BarangController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function search(Request $req)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        $key = $req->key;
+        $data = DB::table('barangs')->select(['nama','satuan','stok','harga'])->where('nama','like',$key)->paginate(10);
+        return json_encode($data);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(barang $barang)
+    public function showAll()
     {
-        //
+        $data = DB::table('barangs')->select(['nama','satuan','stok','harga'])->paginate(15);
+        return json_encode($data);
     }
 
     /**
