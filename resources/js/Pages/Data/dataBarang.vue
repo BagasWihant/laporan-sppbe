@@ -1,15 +1,15 @@
 <template>
 
     <Head title="Data Barang" />
-    <MainDrawerLayout>
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="py-1 text-gray-900">
-                    <strong class="text-xl">Data Barang</strong>
+    <MainDrawerLayout id="mainLayout">
+        <div class="py-10">
+            <div class="max-w-7xl mx-auto xs:px-6 lg:px-8">
+                <div class="py-5 text-gray-900">
+                    <strong class="text-2xl">Data Barang</strong>
                 </div>
 
                 <div class="flex justify-between py-2">
-                    <label class="input input-bordered flex items-center gap-2">
+                    <label class="input input-bordered input-sm flex items-center gap-2">
                         <input type="text" v-model="searchQuery" class="grow" placeholder="Search" />
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
                             class="w-4 h-4 opacity-70">
@@ -18,12 +18,16 @@
                                 clip-rule="evenodd" />
                         </svg>
                     </label>
-
-                    <input id="fileUpload" type="file" accept="text/csv" @change="uploadFiles" hidden>
-                    <button class="btn btn-success btn-sm text-white" @click="pilihFile()">Import CSV</button>
+                    <div class="flex gap-2">
+                        <button class="btn btn-info btn-sm text-white" @click="addBarang()">+ Barang</button>
+                        <div class="">
+                            <input id="fileUpload" type="file" accept="text/csv" @change="uploadFiles" hidden>
+                            <button class="btn btn-success btn-sm text-white" @click="pilihFile()">Import CSV</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-primary-content overflow-hidden shadow sm:rounded-lg">
-                    <table class="table table-zebra">
+                <div class="bg-primary-content overflow-x-auto shadow rounded-lg">
+                    <table class="table table-zebra ">
                         <!-- head -->
                         <thead class="bg-slate-50 text-base">
                             <tr>
@@ -46,12 +50,30 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="flex justify-center overflow-auto bg-slate-50 py-2">
-                        <TailwindPagination :data="barang" class="bg-primary-content" @pagination-change-page="loadData"></TailwindPagination>
+                    <div class="overflow-x-auto w-full bg-slate-50 p-2 m-0">
+                        <TailwindPagination :data="barang" class="bg-primary-content"
+                            @pagination-change-page="loadData"></TailwindPagination>
                     </div>
                 </div>
             </div>
         </div>
+
+        <Modal :show="modalShow" @close="closeModal">
+            <div class="p-6">
+                <h2 class="text-lg font-medium text-gray-900">
+                    Are you sure you want to delete your account?
+                </h2>
+
+                <p class="mt-1 text-sm text-gray-600">
+                    Once your account is deleted, all of its resources and data will be permanently deleted. Please
+                    enter your password to confirm you would like to permanently delete your account.
+                </p>
+                
+                <div class="mt-6 flex justify-end">
+                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+                    </div>
+            </div>
+        </Modal>
     </MainDrawerLayout>
 </template>
 
@@ -62,12 +84,16 @@ import axios from 'axios';
 import { TailwindPagination } from 'laravel-vue-pagination';
 import { onMounted, ref, watch } from 'vue';
 import debounce from 'lodash.debounce';
+import Modal from '@/Components/Modal.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
 
 const file = ref("")
 const barang = ref([])
 const halaman = ref("")
 const from = ref("")
 const searchQuery = ref("")
+const modalShow = ref(false)
+
 
 
 onMounted(() => {
@@ -88,6 +114,16 @@ const pilihFile = () => {
     document.getElementById('fileUpload').click()
 }
 
+const addBarang = () => {
+    modalShow.value = true
+}
+
+const closeModal = () => {
+    modalShow.value = false;
+
+    // form.reset();
+};
+
 const uploadFiles = async (event) => {
     let formData = new FormData()
 
@@ -96,6 +132,7 @@ const uploadFiles = async (event) => {
 
     await axios.post('barang', formData).then((res) => {
         loadData(halaman.value)
+        document.getElementById('fileUpload').value = '' 
     }).catch(() => {
         console.log('fauil');
     })
