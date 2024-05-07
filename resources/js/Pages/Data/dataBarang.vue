@@ -5,7 +5,7 @@
         <div class="py-10">
             <div class="max-w-7xl mx-auto xs:px-6 lg:px-8">
                 <div class="py-5 text-gray-900">
-                    <strong class="text-2xl">Data Barang</strong>
+                    <strong class="text-2xl">Data Barang s</strong>
                 </div>
 
                 <div class="flex justify-between py-2">
@@ -47,7 +47,7 @@
                                 <th>{{ dt.nama }}</th>
                                 <th>{{ dt.satuan }}</th>
                                 <th>{{ dt.stok }}</th>
-                                <th>{{ dt.harga }}</th>
+                                <th>{{ vueNumberFormat(dt.harga, { prefix: 'Rp. ',precision: 0 })}}</th>
                                 <th class="flex gap-1">
                                     <svg :key="dt.id" baseProfile="tiny" height="29px" id="Layer_1" role="button"
                                         class="bg-yellow-300 rounded-md p-1 hover:bg-yellow-500" @click="editModal(dt)"
@@ -71,32 +71,35 @@
         <dialog id="my_modal_2" class="modal">
             <div class="modal-box">
                 <h3 class="font-bold text-center text-2xl">Edit Barang</h3>
-                <div class="w-full flex-col gap-2 flex">
-                    <label for="">Nama</label>
-                    <input type="text" placeholder="Type here" v-model="formBarang.nama"
-                        class="input input-bordered input-sm w-full " />
-                    <div class="flex gap-2 w-full">
-                        <div class="w-full">
-                            <label for="">Stok</label>
-                            <input type="text" placeholder="Type here" class="input input-bordered input-sm w-full "
-                                v-model="formBarang.stok" />
+                <form @submit.prevent="updateBarang">
+                    <div class="w-full flex-col gap-2 flex">
+                        <label for="">Nama</label>
+                        <input type="text" placeholder="Type here" v-model="formBarang.nama"
+                            class="input input-bordered input-sm w-full " />
+                        <div class="flex gap-2 w-full">
+                            <div class="w-full">
+                                <label for="">Stok</label>
+                                <input type="text" placeholder="Type here" class="input input-bordered input-sm w-full "
+                                    v-model="formBarang.stok" />
+                            </div>
+                            <div class="w-full">
+                                <label for="">Satuan</label>
+                                <input type="text" placeholder="Type here" class="input input-bordered input-sm w-full "
+                                    v-model="formBarang.satuan" />
+                            </div>
                         </div>
-                        <div class="w-full">
-                            <label for="">Satuan</label>
-                            <input type="text" placeholder="Type here" class="input input-bordered input-sm w-full "
-                                v-model="formBarang.satuan" />
-                        </div>
+                        <label for="">Harga</label>
+                        <VueNumberFormat v-model:value="formBarang.harga" class="input input-bordered input-sm w-full "
+                            :options="{ precision: 0, prefix: 'Rp. ', suffix: '', decimal: ',', thousand: '.', acceptNegative: false, isInteger: false }">
+                        </VueNumberFormat>
                     </div>
-                    <label for="">Harga</label>
-                    <input type="text" placeholder="Type here" class="input input-bordered input-sm w-full "
-                        v-model="formBarang.harga" />
-                </div>
-                <div class="mt-2 float-end flex gap-4">
-                    <form method="dialog">
-                        <button class="btn btn-error btn-sm text-white">Close</button>
-                    </form>
-                    <button class="btn btn-outline btn-sm btn-success" @click="updateBarang">Update</button>
-                </div>
+                    <div class="mt-2 float-end flex gap-4">
+                        <form method="dialog">
+                            <button class="btn btn-error btn-sm text-white">Close</button>
+                        </form>
+                        <button type="submit" class="btn btn-outline btn-sm btn-success">Update</button>
+                    </div>
+                </form>
 
             </div>
 
@@ -165,7 +168,8 @@ const editModal = (dt) => {
     formBarang.harga = dt.harga
 }
 
-const updateBarang = () => {
+const updateBarang = (e) => {
+    e.preventDefault();
     formBarang.put(route('updateBarang'), {
         onSuccess: () => {
             formBarang.reset()
@@ -178,11 +182,6 @@ const updateBarang = () => {
     })
 }
 
-const closeModal = () => {
-    modalShow.value = false;
-
-    // form.reset();
-};
 
 const uploadFiles = async (event) => {
     let formData = new FormData()
