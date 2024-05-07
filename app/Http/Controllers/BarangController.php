@@ -54,7 +54,7 @@ class BarangController extends Controller
     {
         $key = $req->key;
         
-        $data = DB::table('barangs')->select(['nama','satuan','stok','harga'])->where('nama','like',"%$key%")->paginate(15);
+        $data = DB::table('barangs')->select(['id','satuan','stok','harga'])->where('nama','like',"%$key%")->paginate(15);
         return json_encode($data);
     }
 
@@ -63,7 +63,7 @@ class BarangController extends Controller
      */
     public function showAll()
     {
-        $data = DB::table('barangs')->select(['nama','satuan','stok','harga'])->paginate(15);
+        $data = DB::table('barangs')->select(['id','nama','satuan','stok','harga'])->paginate(15);
         return json_encode($data);
     }
 
