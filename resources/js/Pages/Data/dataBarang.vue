@@ -68,10 +68,10 @@
                     Once your account is deleted, all of its resources and data will be permanently deleted. Please
                     enter your password to confirm you would like to permanently delete your account.
                 </p>
-                
+
                 <div class="mt-6 flex justify-end">
                     <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
-                    </div>
+                </div>
             </div>
         </Modal>
     </MainDrawerLayout>
@@ -102,7 +102,13 @@ onMounted(() => {
 
 const loadData = async (page = 1) => {
     halaman.value = page
-    await axios.get(route('barangShow', 'page') + page)
+    if (searchQuery.value !== '') return await axios.post(route('barangSearch'), { page: page, key: searchQuery.value })
+        .then((res) => {
+            barang.value = res.data
+            // console.log(res);
+            from.value = res.data.from
+        })
+    else return await axios.get(route('barangShow', 'page') + page)
         .then((res) => {
             barang.value = res.data
             // console.log(res);
@@ -132,7 +138,7 @@ const uploadFiles = async (event) => {
 
     await axios.post('barang', formData).then((res) => {
         loadData(halaman.value)
-        document.getElementById('fileUpload').value = '' 
+        document.getElementById('fileUpload').value = ''
     }).catch(() => {
         console.log('fauil');
     })
