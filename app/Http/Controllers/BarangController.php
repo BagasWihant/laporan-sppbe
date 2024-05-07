@@ -78,9 +78,22 @@ class BarangController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, barang $barang)
+    public function update(Request $request)
     {
-        //
+        $nama = $request->nama;
+        $stok = $request->stok;
+        $satuan = $request->satuan;
+        $harga = $request->harga;
+        $id = $request->idn;
+        
+        $barang = barang::find($id);
+
+        $barang->update([
+            'nama'=>$nama,
+            'stok'=>$stok,
+            'satuan'=>$satuan,
+            'harga'=>$harga,
+        ]);
     }
 
     /**

@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/showAllBarang','showAll')->name('barangShow');
         Route::post('/cariBarang','search')->name('barangSearch');
         Route::post('/barang','uploadDataBarang')->name('uploadBarang');
+        Route::put('/barang','update')->name('updateBarang');
     });
     
     Route::controller(MasterDataController::class)->group(function(){
