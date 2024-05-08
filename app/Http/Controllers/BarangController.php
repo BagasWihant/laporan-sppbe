@@ -99,8 +99,9 @@ class BarangController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(barang $barang)
+    public function bulkDelete()
     {
-        //
+        $data = barang::whereIn('id',request('ids'))->delete();
+        // dd($data);
     }
 }

@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/cariBarang','search')->name('barangSearch');
         Route::post('/barang','uploadDataBarang')->name('uploadBarang');
         Route::put('/barang','update')->name('updateBarang');
+        Route::delete('/bulkDeleteBarang','bulkDelete')->name('bulkDeleteBarang');
     });
     
     Route::controller(MasterDataController::class)->group(function(){

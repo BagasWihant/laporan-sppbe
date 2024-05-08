@@ -19,7 +19,7 @@
                         </svg>
                     </label>
                     <div class="flex gap-2">
-                        <button class="btn btn-info btn-sm text-white" @click="openModal">+ Barang</button>
+                        <button class="btn btn-info btn-sm text-white" v-if="selected.length > 0" @click="bulkDelete">Delete Selected</button>
                         <div class="">
                             <input id="fileUpload" type="file" accept="text/csv" @change="uploadFiles" hidden>
                             <button class="btn btn-success btn-sm text-white" @click="pilihFile()">Import CSV</button>
@@ -31,7 +31,8 @@
                         <!-- head -->
                         <thead class="bg-slate-50 text-base">
                             <tr>
-                                <th></th>
+                                <th><input type="checkbox" v-model="selectingAll" @change="selectAll" /></th>
+                                <th>No</th>
                                 <th>Name</th>
                                 <th>Satuan</th>
                                 <th>Stok</th>
@@ -43,6 +44,7 @@
                             <!-- {{ barang.data }} -->
                             <!-- row 1 -->
                             <tr v-for="(dt, index) in barang.data" :key="dt.id">
+                                <th><input type="checkbox" @change="toggleSelect(dt)" :checked="selectingAll" /></th>
                                 <th>{{ index + from }}</th>
                                 <th>{{ dt.nama }}</th>
                                 <th>{{ dt.satuan }}</th>
@@ -116,9 +118,12 @@ import { onMounted, ref, watch } from 'vue';
 import debounce from 'lodash.debounce';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
+import Swal from 'sweetalert2';
 
 const file = ref("")
 const barang = ref([])
+const selected = ref([])
+const selectingAll = ref(false)
 const halaman = ref("")
 const from = ref("")
 const searchQuery = ref("")
@@ -138,10 +143,43 @@ onMounted(() => {
     loadData()
 })
 
+const toggleSelect = (data) =>{
+ const ind = selected.value.indexOf(data.id) 
+ if(ind === -1){
+    selected.value.push(data.id)
+}else{
+     selected.value.splice(ind,1)
+ }
+}
+
+const selectAll = ()=>{
+    // console.log(barang.value.data);
+    if(selectingAll.value) selected.value = barang.value.data.map(barang => barang.id)
+    else selected.value = []
+    
+}
+
+const bulkDelete = ()=>{
+    axios.delete(route('bulkDeleteBarang'),{
+        data:{
+            ids: selected.value
+        }
+    })
+    .then(res=>{
+        loadData()
+        console.log(res,selected.value);
+        selected.value = []
+        selectingAll.value = false
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+}
+
 const loadData = async (page = 1) => {
     halaman.value = page
     if (searchQuery.value !== '') return await axios.post(route('barangSearch'), { page: page, key: searchQuery.value })
-        .then((res) => {
+        .then(res => {
             barang.value = res.data
             // console.log(res);
             from.value = res.data.from
