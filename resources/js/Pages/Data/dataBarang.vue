@@ -19,7 +19,8 @@
                         </svg>
                     </label>
                     <div class="flex gap-2">
-                        <button class="btn btn-info btn-sm text-white" v-if="selected.length > 0" @click="bulkDelete">Delete Selected</button>
+                        <button class="btn btn-info btn-sm text-white" v-if="selected.length > 0"
+                            @click="bulkDelete">Delete Selected</button>
                         <div class="">
                             <input id="fileUpload" type="file" accept="text/csv" @change="uploadFiles" hidden>
                             <button class="btn btn-success btn-sm text-white" @click="pilihFile()">Import CSV</button>
@@ -49,7 +50,7 @@
                                 <th>{{ dt.nama }}</th>
                                 <th>{{ dt.satuan }}</th>
                                 <th>{{ dt.stok }}</th>
-                                <th>{{ vueNumberFormat(dt.harga, { prefix: 'Rp. ',precision: 0 })}}</th>
+                                <th>{{ vueNumberFormat(dt.harga, { prefix: 'Rp. ', precision: 0 }) }}</th>
                                 <th class="flex gap-1">
                                     <svg :key="dt.id" baseProfile="tiny" height="29px" id="Layer_1" role="button"
                                         class="bg-yellow-300 rounded-md p-1 hover:bg-yellow-500" @click="editModal(dt)"
@@ -143,52 +144,55 @@ onMounted(() => {
     loadData()
 })
 
-const toggleSelect = (data) =>{
- const ind = selected.value.indexOf(data.id) 
- if(ind === -1){
-    selected.value.push(data.id)
-}else{
-     selected.value.splice(ind,1)
- }
+const toggleSelect = (data) => {
+    const ind = selected.value.indexOf(data.id)
+    if (ind === -1) {
+        selected.value.push(data.id)
+    } else {
+        selected.value.splice(ind, 1)
+    }
 }
 
-const selectAll = ()=>{
-    // console.log(barang.value.data);
-    if(selectingAll.value) selected.value = barang.value.data.map(barang => barang.id)
+const selectAll = () => {
+    if (selectingAll.value) selected.value = barang.value.data.map(barang => barang.id)
     else selected.value = []
-    
+
 }
 
-const bulkDelete = ()=>{
-    axios.delete(route('bulkDeleteBarang'),{
-        data:{
+const bulkDelete = () => {
+    axios.delete(route('bulkDeleteBarang'), {
+        data: {
             ids: selected.value
         }
     })
-    .then(res=>{
-        loadData()
-        console.log(res,selected.value);
-        selected.value = []
-        selectingAll.value = false
-    })
-    .catch(err=>{
-        console.log(err);
-    })
+        .then(res => {
+            loadData()
+            console.log(res, selected.value);
+            selected.value = []
+            selectingAll.value = false
+        })
+        .catch(err => {
+            console.log(err);
+        })
 }
 
 const loadData = async (page = 1) => {
+    selectingAll.value = false
+    selected.value = []
     halaman.value = page
     if (searchQuery.value !== '') return await axios.post(route('barangSearch'), { page: page, key: searchQuery.value })
         .then(res => {
             barang.value = res.data
             // console.log(res);
             from.value = res.data.from
+
         })
     else return await axios.get(route('barangShow', 'page') + page)
         .then((res) => {
             barang.value = res.data
             // console.log(res);
             from.value = res.data.from
+
         })
 }
 
@@ -212,7 +216,7 @@ const updateBarang = (e) => {
         onSuccess: () => {
             formBarang.reset()
             document.getElementById('my_modal_2').close()
-            loadData()
+            loadData(halaman.value)
         },
         onError: (err) => {
             console.log(err);

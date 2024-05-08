@@ -54,7 +54,7 @@
                 </main>
 
             </div>
-            <div class="drawer-side">
+            <div class="drawer-side z-10">
                 <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
                 <ul class="p-4 w-72 min-h-full bg-base-300 text-base-content">
                     <!-- Sidebar content here -->
