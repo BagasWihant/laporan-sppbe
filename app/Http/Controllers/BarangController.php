@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class BarangController extends Controller
 {
+    private $page;
+
+    public function __construct() {
+        $this->page = 20;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -17,9 +22,10 @@ class BarangController extends Controller
         // $data = barang::onl()->paginate(10);
         // $data = $this->showAll();
         // $data = DB::table('barangs')->paginate(10);
-        
+
         return Inertia::render('Data/dataBarang');
     }
+    
 
     function uploadDataBarang(Request $req)
     {
@@ -32,19 +38,28 @@ class BarangController extends Controller
         $csv = $req->file('file');
         $content = file($csv->getPathname());
         $i = 1;
-        foreach ($content as $line) {
-            $data = str_getcsv($line);
-            if ($i !== 1) {
-                // INSERT
-                barang::create([
-                    'nama' => $data[0],
-                    'satuan' => $data[1],
-                    'stok' => $data[2],
-                    'harga' => $data[3],
-                    'hisHarga' => json_encode($data[4]),
-                ]);
+        DB::beginTransaction();
+        try {
+            foreach ($content as $line) {
+                $data = str_getcsv($line);
+                if ($i !== 1) {
+                    // INSERT
+                    barang::create([
+                        'nama' => $data[0],
+                        'satuan' => $data[1],
+                        'stok' => $data[2],
+                        'harga' => $data[3],
+                        'hisHarga' => json_encode($data[4]),
+                    ]);
+                }
+                $i++;
             }
-            $i++;
+            DB::commit();
+            return json_encode(['status' => 'success', 'message' => 'Data Berhasilimpan']);
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return json_encode(['status' => 'error', 'message' => 'Data Tidak Berhasilimpan']);
         }
     }
     /**
@@ -53,8 +68,8 @@ class BarangController extends Controller
     public function search(Request $req)
     {
         $key = $req->key;
-        
-        $data = DB::table('barangs')->select(['id','satuan','stok','harga'])->where('nama','like',"%$key%")->paginate(15);
+
+        $data = DB::table('barangs')->select(['id', 'nama','satuan', 'stok', 'harga'])->where('nama', 'like', "%$key%")->paginate($this->page);
         return json_encode($data);
     }
 
@@ -63,7 +78,7 @@ class BarangController extends Controller
      */
     public function showAll()
     {
-        $data = DB::table('barangs')->select(['id','nama','satuan','stok','harga'])->paginate(15);
+        $data = DB::table('barangs')->select(['id', 'nama', 'satuan', 'stok', 'harga'])->paginate($this->page);
         return json_encode($data);
     }
 
@@ -85,14 +100,14 @@ class BarangController extends Controller
         $satuan = $request->satuan;
         $harga = $request->harga;
         $id = $request->idn;
-        
+
         $barang = barang::find($id);
 
         $barang->update([
-            'nama'=>$nama,
-            'stok'=>$stok,
-            'satuan'=>$satuan,
-            'harga'=>$harga,
+            'nama' => $nama,
+            'stok' => $stok,
+            'satuan' => $satuan,
+            'harga' => $harga,
         ]);
     }
 
@@ -101,7 +116,7 @@ class BarangController extends Controller
      */
     public function bulkDelete()
     {
-        $data = barang::whereIn('id',request('ids'))->delete();
+        $data = barang::whereIn('id', request('ids'))->delete();
         // dd($data);
     }
 }
