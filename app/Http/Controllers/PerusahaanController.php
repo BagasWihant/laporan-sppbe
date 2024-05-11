@@ -40,12 +40,19 @@ class PerusahaanController extends Controller
         $data = perusahaan::whereIn('id', request('ids'))->delete();
         // dd($data);
     }
-    /**
-     * Display the specified resource.
-     */
-    public function show(perusahaan $perusahaan)
+    
+    public function store(Request $request)
     {
-        //
+        
+        $nama = $request->nama;
+        $pemilik = $request->pemilik;
+        $alamat = $request->alamat;
+
+        DB::table('perusahaans')->insert([
+            'nama' => $nama,
+            'pemilik' => $pemilik,
+            'alamat' => $alamat
+        ]);
     }
 
     /**

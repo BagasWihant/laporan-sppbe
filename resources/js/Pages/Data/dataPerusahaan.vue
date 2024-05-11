@@ -23,7 +23,7 @@
                             @click="bulkDelete">Delete Selected</button>
                         <div class="">
                             <input id="fileUpload" type="file" accept="text/csv" @change="uploadFiles" hidden>
-                            <button class="btn btn-success btn-sm text-white" @click="pilihFile()">Tambah PT</button>
+                            <button class="btn btn-success btn-sm text-white" @click="editModal('add')">Tambah PT</button>
                         </div>
                     </div>
                 </div>
@@ -62,8 +62,8 @@
                         </tbody>
                     </table>
                     <div class="overflow-x-auto w-full bg-slate-50 p-2 m-0">
-                        <TailwindPagination :data="pt" class="bg-primary-content"
-                            @pagination-change-page="loadData"></TailwindPagination>
+                        <TailwindPagination :data="pt" class="bg-primary-content" @pagination-change-page="loadData">
+                        </TailwindPagination>
                     </div>
                 </div>
             </div>
@@ -71,30 +71,59 @@
 
         <dialog id="my_modal_2" class="modal">
             <div class="modal-box">
-                <h3 class="font-bold text-center text-2xl">Edit Perusahaan</h3>
-                <form @submit.prevent="updatePT">
-                    <div class="w-full flex-col gap-2 flex">
-                        <label for="">Nama</label>
-                        <input type="text" placeholder="Type here" v-model="formPT.nama"
-                            class="input input-bordered input-sm w-full " />
-                        <div class="w-full">
-                            <label for="">Pemilik</label>
-                            <input type="text" placeholder="Type here" class="input input-bordered input-sm w-full "
-                                v-model="formPT.pemilik" />
+                <template v-if="isiModal === 'add'">
+
+                    <h3 class="font-bold text-center text-2xl">Tambah Perusahaan</h3>
+                    <form @submit.prevent="addPT">
+                        <div class="w-full flex-col gap-2 flex">
+                            <label for="">Nama</label>
+                            <input type="text" placeholder="Type here" v-model="formPT.nama"
+                                class="input input-bordered input-sm w-full " />
+                            <div class="w-full">
+                                <label for="">Pemilik</label>
+                                <input type="text" placeholder="Type here" class="input input-bordered input-sm w-full "
+                                    v-model="formPT.pemilik" />
+                            </div>
+                            <div class="w-full">
+                                <label for="">Alamat</label>
+                                <input type="text" placeholder="Type here" class="input input-bordered input-sm w-full "
+                                    v-model="formPT.alamat" />
+                            </div>
                         </div>
-                        <div class="w-full">
-                            <label for="">Alamat</label>
-                            <input type="text" placeholder="Type here" class="input input-bordered input-sm w-full "
-                                v-model="formPT.alamat" />
+                        <div class="mt-2 float-end flex gap-4">
+                            <form method="dialog">
+                                <button class="btn btn-error btn-sm text-white">Close</button>
+                            </form>
+                            <button type="submit" class="btn btn-outline btn-sm btn-success">Tambah</button>
                         </div>
-                    </div>
-                    <div class="mt-2 float-end flex gap-4">
-                        <form method="dialog">
-                            <button class="btn btn-error btn-sm text-white">Close</button>
-                        </form>
-                        <button type="submit" class="btn btn-outline btn-sm btn-success">Update</button>
-                    </div>
-                </form>
+                    </form>
+                </template>
+                <template v-else>
+                    <h3 class="font-bold text-center text-2xl">Edit Perusahaan</h3>
+                    <form @submit.prevent="updatePT">
+                        <div class="w-full flex-col gap-2 flex">
+                            <label for="">Nama</label>
+                            <input type="text" placeholder="Type here" v-model="formPT.nama"
+                                class="input input-bordered input-sm w-full " />
+                            <div class="w-full">
+                                <label for="">Pemilik</label>
+                                <input type="text" placeholder="Type here" class="input input-bordered input-sm w-full "
+                                    v-model="formPT.pemilik" />
+                            </div>
+                            <div class="w-full">
+                                <label for="">Alamat</label>
+                                <input type="text" placeholder="Type here" class="input input-bordered input-sm w-full "
+                                    v-model="formPT.alamat" />
+                            </div>
+                        </div>
+                        <div class="mt-2 float-end flex gap-4">
+                            <form method="dialog">
+                                <button class="btn btn-error btn-sm text-white">Close</button>
+                            </form>
+                            <button type="submit" class="btn btn-outline btn-sm btn-success">Update</button>
+                        </div>
+                    </form>
+                </template>
 
             </div>
 
@@ -195,16 +224,33 @@ const pilihFile = () => {
 
 const editModal = (dt) => {
     document.getElementById('my_modal_2').showModal()
+    if (dt === 'add') isiModal.value = 'add'
+    else{
 
-    formPT.idn = dt.id
-    formPT.nama = dt.nama
-    formPT.pemilik = dt.pemilik
-    formPT.alamat = dt.alamat
+        
+        formPT.idn = dt.id
+        formPT.nama = dt.nama
+        formPT.pemilik = dt.pemilik
+        formPT.alamat = dt.alamat
+    }
 }
 
 const updatePT = (e) => {
     e.preventDefault();
     formPT.put(route('updatePT'), {
+        onSuccess: () => {
+            formPT.reset()
+            document.getElementById('my_modal_2').close()
+            loadData(halaman.value)
+        },
+        onError: (err) => {
+            console.log(err);
+        },
+    })
+}
+const addPT = (e) => {
+    e.preventDefault();
+    formPT.post(route('addPT'), {
         onSuccess: () => {
             formPT.reset()
             document.getElementById('my_modal_2').close()

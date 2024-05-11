@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/cariPT','search')->name('PTSearch');
         Route::put('/perusahaan','update')->name('updatePT');
         Route::delete('/bulkDeletePT','bulkDelete')->name('bulkDeletePT');
+        Route::post('/perusahaan','store')->name('addPT');
 
     });
 
