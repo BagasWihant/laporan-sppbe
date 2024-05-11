@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\BarangController;
-use App\Http\Controllers\MasterDataController;
+use App\Http\Controllers\PerusahaanController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -37,8 +37,13 @@ Route::middleware('auth')->group(function () {
         Route::delete('/bulkDeleteBarang','bulkDelete')->name('bulkDeleteBarang');
     });
     
-    Route::controller(MasterDataController::class)->group(function(){
-        Route::get('/perusahaan','dataPerusahaan')->name('perusahaan');
+    
+    Route::controller(PerusahaanController::class)->group(function(){
+        Route::get('/perusahaan','index')->name('perusahaan');
+        Route::get('/showAllPT','showAll')->name('PTShow');
+        Route::post('/cariPT','search')->name('PTSearch');
+        Route::put('/barang','update')->name('updatePT');
+
     });
 
 
