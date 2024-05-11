@@ -4,7 +4,7 @@
             <li>
                 <Link :href=" baseurl +childitem.route" @click="handleItemClick(index)"
                     class="relative p-3 flex items-center gap-2.5 rounded-2xl"
-                    :class="{ 'bg-slate-600 text-white': childitem.rt === sidebarStore.selected }">
+                    :class="{ 'bg-slate-600 text-white': childitem.rt === currentPage }">
                 {{ childitem.label }}
                 </Link>
             </li>
@@ -20,7 +20,7 @@ import { ref } from 'vue';
 const sidebarStore = useSidebarStore()
 const baseurl = route().t.url
 
-const props = defineProps(['items', 'page'])
+const props = defineProps(['items', 'page','currentPage'])
 const items = ref(props.items)
 
 const handleItemClick = (index) => {

@@ -1,7 +1,7 @@
 <template>
   <div class="rounded-box gap-2">
     <template v-for="menu in menuGroups" :key="menu.id">
-      <h3>{{ menu.name }}</h3>
+      <h3>{{ menu.name }}</h3> 
 
       <ul>
         <SidebarMeniItem v-for="(menuItem, index) in menu.menuItems" :item="menuItem" :key="index" :index="index">

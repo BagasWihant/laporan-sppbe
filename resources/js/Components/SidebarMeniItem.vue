@@ -20,7 +20,7 @@
         <template v-else>
             <Link :href="item.route"class="relative flex items-center gap-2.5 p-3 rounded-2xl"
                 @click.prevent="handleItemClick('singel')" :class="{
-                    'bg-slate-600 text-white ': sidebarStore.page === item.rt
+                    'bg-slate-600 text-white ': currentPage === item.rt
                 }">
             <span v-html="item.icon"></span>
 
@@ -44,12 +44,6 @@ const props = defineProps(['item', 'index'])
 const sidebarStore = useSidebarStore()
 
 const currentPage = route().current()
-
-if(currentPage === props.item.rt){
-    sidebarStore.page = props.item.rt
-    sidebarStore.selected = null
-
-}
 
 const handleItemClick = (e) => {
     const page = sidebarStore.page === props.item.rt ? '' : props.item.rt
