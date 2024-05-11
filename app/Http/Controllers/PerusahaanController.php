@@ -34,14 +34,12 @@ class PerusahaanController extends Controller
         $data = DB::table('perusahaans')->select(['id', 'nama', 'alamat', 'pemilik'])->where('nama', 'like', "%$key%")->paginate($this->page);
         return json_encode($data);
     }
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+   
+    public function bulkDelete()
     {
-        //
+        $data = perusahaan::whereIn('id', request('ids'))->delete();
+        // dd($data);
     }
-
     /**
      * Display the specified resource.
      */
@@ -63,7 +61,16 @@ class PerusahaanController extends Controller
      */
     public function update(Request $request, perusahaan $perusahaan)
     {
-        //
+        $nama = $request->nama;
+        $pemilik = $request->pemilik;
+        $alamat = $request->alamat;
+        $id = $request->idn;
+
+        DB::table('perusahaans')->where('id', $id)->update([
+            'nama' => $nama,
+            'pemilik' => $pemilik,
+            'alamat' => $alamat
+        ]);
     }
 
     /**

@@ -42,7 +42,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/perusahaan','index')->name('perusahaan');
         Route::get('/showAllPT','showAll')->name('PTShow');
         Route::post('/cariPT','search')->name('PTSearch');
-        Route::put('/barang','update')->name('updatePT');
+        Route::put('/perusahaan','update')->name('updatePT');
+        Route::delete('/bulkDeletePT','bulkDelete')->name('bulkDeletePT');
 
     });
 
