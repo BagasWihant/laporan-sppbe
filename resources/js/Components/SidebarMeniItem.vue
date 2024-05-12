@@ -24,7 +24,7 @@
                 }">
             <span v-html="item.icon"></span>
 
-            {{ item.label }}
+            {{ item.label }} 
             </Link>
         </template>
 
@@ -44,7 +44,6 @@ const props = defineProps(['item', 'index'])
 const sidebarStore = useSidebarStore()
 
 const currentPage = route().current()
-
 const handleItemClick = (e) => {
     const page = sidebarStore.page === props.item.rt ? '' : props.item.rt
     

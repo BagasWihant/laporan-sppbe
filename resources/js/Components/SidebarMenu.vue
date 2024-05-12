@@ -36,7 +36,7 @@ const menuGroups = ref([
                   />
                 </svg>`,
         label: 'Dashboard',
-        route: 'dashboard',
+        route: route('dashboard'),
         rt: 'dashboard',
       },
 
@@ -88,7 +88,7 @@ const menuGroups = ref([
         child:[
           {
             label: 'RAB',
-            route: '/laporan/rab',
+            route: route('rab'),
             rt: 'rab'
           },
           {
