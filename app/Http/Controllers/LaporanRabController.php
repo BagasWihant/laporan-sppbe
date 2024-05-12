@@ -13,15 +13,15 @@ class LaporanRabController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Laporan/RAB');
+        return Inertia::render('RAB/index');
     }
-
+    
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return Inertia::render('RAB/create');
     }
 
     /**

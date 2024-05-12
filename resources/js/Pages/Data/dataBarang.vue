@@ -29,7 +29,6 @@
                 </div>
                 <div class="bg-primary-content overflow-x-auto shadow rounded-lg">
                     <table class="table table-zebra ">
-                        <!-- head -->
                         <thead class="bg-slate-50 text-base">
                             <tr>
                                 <th><input type="checkbox" v-model="selectingAll" @change="selectAll" /></th>
@@ -42,8 +41,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- {{ barang.data }} -->
-                            <!-- row 1 -->
                             <tr v-for="(dt, index) in barang.data" :key="dt.id">
                                 <th><input type="checkbox" @change="toggleSelect(dt)" :checked="selectingAll" /></th>
                                 <th>{{ index + from }}</th>

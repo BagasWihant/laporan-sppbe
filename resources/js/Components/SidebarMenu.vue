@@ -88,8 +88,8 @@ const menuGroups = ref([
         child:[
           {
             label: 'RAB',
-            route: route('rab'),
-            rt: 'rab'
+            route: route('rab.index'),
+            rt: 'rab.index'
           },
           {
             label: 'Purchase Order',

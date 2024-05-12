@@ -23,41 +23,34 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
 
-    Route::controller(ProfileController::class)->group(function() {
+    Route::controller(ProfileController::class)->group(function () {
         Route::get('/profile', 'edit')->name('profile.edit');
         Route::patch('/profile', 'update')->name('profile.update');
         Route::delete('/profile', 'destroy')->name('profile.destroy');
     });
 
-    Route::controller(BarangController::class)->group(function(){
-        Route::get('/barang','index')->name('barang');
-        Route::get('/showAllBarang','showAll')->name('barangShow');
-        Route::post('/cariBarang','search')->name('barangSearch');
-        Route::post('/barang','uploadDataBarang')->name('uploadBarang');
-        Route::put('/barang','update')->name('updateBarang');
-        Route::delete('/bulkDeleteBarang','bulkDelete')->name('bulkDeleteBarang');
-    });
-    
-    
-    Route::controller(PerusahaanController::class)->group(function(){
-        Route::get('/perusahaan','index')->name('perusahaan');
-        Route::get('/showAllPT','showAll')->name('PTShow');
-        Route::post('/cariPT','search')->name('PTSearch');
-        Route::put('/perusahaan','update')->name('updatePT');
-        Route::delete('/bulkDeletePT','bulkDelete')->name('bulkDeletePT');
-        Route::post('/perusahaan','store')->name('addPT');
-    });
-
-    Route::prefix('laporan')->group(function(){
-       Route::controller(LaporanRabController::class)->group(function(){
-        Route::get('/rab','index')->name('rab');
-        Route::post('/cariLaporan','search')->name('laporanSearch');
-        Route::get('/laporan/{id}','show')->name('showLaporan');
-        Route::post('/laporan','store')->name('addLaporan');    
-       });
+    Route::controller(BarangController::class)->group(function () {
+        Route::get('/barang', 'index')->name('barang');
+        Route::get('/showAllBarang', 'showAll')->name('barangShow');
+        Route::post('/cariBarang', 'search')->name('barangSearch');
+        Route::post('/barang', 'uploadDataBarang')->name('uploadBarang');
+        Route::put('/barang', 'update')->name('updateBarang');
+        Route::delete('/bulkDeleteBarang', 'bulkDelete')->name('bulkDeleteBarang');
     });
 
 
+    Route::controller(PerusahaanController::class)->group(function () {
+        Route::get('/perusahaan', 'index')->name('perusahaan');
+        Route::get('/showAllPT', 'showAll')->name('PTShow');
+        Route::post('/cariPT', 'search')->name('PTSearch');
+        Route::put('/perusahaan', 'update')->name('updatePT');
+        Route::delete('/bulkDeletePT', 'bulkDelete')->name('bulkDeletePT');
+        Route::post('/perusahaan', 'store')->name('addPT');
+    });
+
+    Route::prefix('laporan')->group(function () {
+        Route::resource('rab', LaporanRabController::class);
+    });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
