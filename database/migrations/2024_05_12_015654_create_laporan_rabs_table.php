@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('laporan_rabs', function (Blueprint $table) {
             $table->id();
             $table->string('title',50);
-            $table->bigInteger('from')->comment('pembuat');
+            $table->string('subtitle',50);
             $table->bigInteger('to')->comment('ditujukan');
             $table->json('isi');
-            $table->json('tambahan')->nullable();
+            $table->json('ttd')->comment('[nama,file]');
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
