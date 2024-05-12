@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\LaporanRabController;
 use App\Http\Controllers\PerusahaanController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -45,7 +46,15 @@ Route::middleware('auth')->group(function () {
         Route::put('/perusahaan','update')->name('updatePT');
         Route::delete('/bulkDeletePT','bulkDelete')->name('bulkDeletePT');
         Route::post('/perusahaan','store')->name('addPT');
+    });
 
+    Route::prefix('laporan')->group(function(){
+       Route::controller(LaporanRabController::class)->group(function(){
+        Route::get('/rab','index')->name('rab');
+        Route::post('/cariLaporan','search')->name('laporanSearch');
+        Route::get('/laporan/{id}','show')->name('showLaporan');
+        Route::post('/laporan','store')->name('addLaporan');    
+       });
     });
 
 

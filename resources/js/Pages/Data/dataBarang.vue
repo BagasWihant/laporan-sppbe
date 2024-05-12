@@ -5,7 +5,7 @@
         <div class="py-10">
             <div class="max-w-7xl mx-auto xs:px-6 lg:px-8">
                 <div class="py-5 text-gray-900">
-                    <strong class="text-2xl">Data Barang s</strong>
+                    <strong class="text-2xl">Data Barang</strong>
                 </div>
 
                 <div class="flex justify-between py-2">
