@@ -23,7 +23,7 @@
                             @click="bulkDelete">Delete Selected</button>
                         <div class="">
                             <input id="fileUpload" type="file" accept="text/csv" @change="uploadFiles" hidden>
-                            <button class="btn btn-success btn-sm text-white" @click="pilihFile()">RAB Baru</button>
+                            <Link class="btn btn-success btn-sm text-white" :href="route('rab.create')" >RAB Baru</Link>
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
 
 <script setup>
 import MainDrawerLayout from '@/Layouts/MainDrawerLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const searchQuery = ref("")
