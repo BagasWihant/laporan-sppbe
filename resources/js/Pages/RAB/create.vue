@@ -40,9 +40,37 @@
                         <input type="file" class="file-input file-input-bordered file-input-accent w-full " />
                     </div>
                 </form>
-                
-                <TabelBarang :barang="dataBarang" :nomor="from" @pilih="terpilih" >
 
+                <div class="overflow-x-auto">
+                    <table class="table table-xs">
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>Name</th>
+                                <th>Satuan</th>
+                                <th>Harga</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="d in dataTerpilih" >
+                                <th>{{ d[0] }}</th>
+                                <th>{{ d[1] }}</th>
+                                <th>{{ d[2] }}</th>
+                                <th>{{ d[3] }}</th>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Satuan</th>
+                                <th>Harga</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <TabelBarang :barang="dataBarang" :nomor="from" @pilih="terpilih">
                     <div class="overflow-x-auto w-full bg-slate-50 p-2 m-0">
                         <TailwindPagination :data="dataBarang" class="bg-primary-content"
                             @pagination-change-page="loadBarang"></TailwindPagination>
@@ -62,30 +90,28 @@ import { onMounted, ref } from 'vue';
 import { TailwindPagination } from 'laravel-vue-pagination';
 
 const dataBarang = ref([])
+const dataTerpilih = ref([])
 const searchQuery = ref("")
 const from = ref(0)
 onMounted(() => {
     loadBarang()
-
 })
-const terpilih = (value)=>{
+
+const terpilih = (value) => {
     console.log(value);
+    dataTerpilih.value = value
 }
+
 const loadBarang = async (page = 1) => {
     if (searchQuery.value !== '') return await axios.post(route('barangSearch'), { page: page, key: searchQuery.value })
         .then(res => {
             dataBarang.value = res.data
             from.value = res.data.from
-            
-            // console.log(res);
-            
         })
-        else return await axios.get(route('barangShow', 'page') + page)
+    else return await axios.get(route('barangShow', 'page') + page)
         .then((res) => {
             dataBarang.value = res.data
             from.value = res.data.from
-            // console.log(res);
-
         })
 }
 
