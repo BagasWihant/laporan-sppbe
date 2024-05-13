@@ -49,7 +49,7 @@ class BarangController extends Controller
                         'satuan' => $data[1],
                         'stok' => $data[2],
                         'harga' => $data[3],
-                        'hisHarga' => json_encode($data[4]),
+                        'hisHarga' => json_encode(isset($data[4]) ?? ''),
                     ]);
                 }
                 $i++;
@@ -57,9 +57,9 @@ class BarangController extends Controller
             DB::commit();
             return json_encode(['status' => 'success', 'message' => 'Data Berhasilimpan']);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
             DB::rollBack();
-            return json_encode(['status' => 'error', 'message' => 'Data Tidak Berhasilimpan']);
+            return json_encode(['status' => 'error', 'message' => 'Data Tidak Berhasil disimpan','detail'=>$th->getMessage()]);
         }
     }
     /**
