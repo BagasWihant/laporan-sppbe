@@ -40,7 +40,8 @@
                         <input type="file" class="file-input file-input-bordered file-input-accent w-full " />
                     </div>
                 </form>
-                <TabelBarang :barang="dataBarang" :nomor="from">
+                
+                <TabelBarang :barang="dataBarang" :nomor="from" @pilih="terpilih" >
 
                     <div class="overflow-x-auto w-full bg-slate-50 p-2 m-0">
                         <TailwindPagination :data="dataBarang" class="bg-primary-content"
@@ -63,11 +64,13 @@ import { TailwindPagination } from 'laravel-vue-pagination';
 const dataBarang = ref([])
 const searchQuery = ref("")
 const from = ref(0)
-
 onMounted(() => {
     loadBarang()
 
 })
+const terpilih = (value)=>{
+    console.log(value);
+}
 const loadBarang = async (page = 1) => {
     if (searchQuery.value !== '') return await axios.post(route('barangSearch'), { page: page, key: searchQuery.value })
         .then(res => {
