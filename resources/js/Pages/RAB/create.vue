@@ -10,34 +10,34 @@
 
                 <form>
                     <div class="p-2">
-                        <label class="input input-bordered flex items-center gap-5">
+                        <label class="input input-bordered input-sm flex items-center gap-5">
                             Judul
                             <input type="text" class="grow" placeholder="Daisy" />
                         </label>
                     </div>
                     <div class="p-2">
-                        <label class="input input-bordered flex items-center gap-5">
+                        <label class="input input-bordered input-sm flex items-center gap-5">
                             Sub Judul
                             <input type="text" class="grow" placeholder="Sub Judul" />
                         </label>
                     </div>
                     <div class="p-2">
-                        <label class="input input-bordered flex items-center gap-5">
+                        <label class="input input-bordered input-sm flex items-center gap-5">
                             Tujuan
                             <input type="text" class="grow" placeholder="Tujuan" />
                         </label>
                     </div>
                     <div class="p-2">
-                        <label class="input input-bordered flex items-center gap-5">
+                        <label class="input input-bordered input-sm flex items-center gap-5">
                             Notes
                             <input type="text" class="grow" placeholder="Notes" />
                         </label>
                     </div>
                     <div class="p-2">
-                        <label class="flex gap-5">
+                        <label class="flex gap-5 input input-sm items-center input-bordered ">
                             TTD
+                            <input type="file" class="file-input-sm file-input w-full " />
                         </label>
-                        <input type="file" class="file-input file-input-bordered file-input-accent w-full " />
                     </div>
                 </form>
 
@@ -70,11 +70,8 @@
                     </table>
                 </div>
 
-                <TabelBarang :barang="dataBarang" :nomor="from" @pilih="terpilih">
-                    <div class="overflow-x-auto w-full bg-slate-50 p-2 m-0">
-                        <TailwindPagination :data="dataBarang" class="bg-primary-content"
-                            @pagination-change-page="loadBarang"></TailwindPagination>
-                    </div>
+                <TabelBarang @pilih="terpilih" :selectAllToggle="selectAll" >
+                   
                 </TabelBarang>
             </div>
         </div>
@@ -87,32 +84,14 @@ import MainDrawerLayout from '@/Layouts/MainDrawerLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import TabelBarang from '../Data/tabelBarang.vue';
 import { onMounted, ref } from 'vue';
-import { TailwindPagination } from 'laravel-vue-pagination';
 
-const dataBarang = ref([])
 const dataTerpilih = ref([])
-const searchQuery = ref("")
-const from = ref(0)
-onMounted(() => {
-    loadBarang()
-})
+const selectAll = ref(false)
+const emit = defineEmits(['toggle'])
 
 const terpilih = (value) => {
-    console.log(value);
     dataTerpilih.value = value
 }
 
-const loadBarang = async (page = 1) => {
-    if (searchQuery.value !== '') return await axios.post(route('barangSearch'), { page: page, key: searchQuery.value })
-        .then(res => {
-            dataBarang.value = res.data
-            from.value = res.data.from
-        })
-    else return await axios.get(route('barangShow', 'page') + page)
-        .then((res) => {
-            dataBarang.value = res.data
-            from.value = res.data.from
-        })
-}
 
 </script>
