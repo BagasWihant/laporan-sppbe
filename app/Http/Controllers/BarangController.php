@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Barang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BarangController extends Controller
 {
@@ -12,7 +13,7 @@ class BarangController extends Controller
      */
     public function index()
     {
-        return inertia('Dashboard');
+        return inertia('Master/Barang/Index');
     }
 
     /**
@@ -61,5 +62,13 @@ class BarangController extends Controller
     public function destroy(Barang $barang)
     {
         //
+    }
+
+    public function showAll(Request $request)
+    {
+        $data = DB::table('barangs')->select(['id', 'nama', 'satuan', 'stok', 'harga'])->paginate(10);
+        return response()->json([
+            'data' => $data
+        ]);
     }
 }
