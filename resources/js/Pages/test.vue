@@ -1,11 +1,7 @@
 <template>
-    <Base>
-
-        <h1>test</h1>
-
-    </Base>
+    <h1>Yay</h1>
+    <a href="dashboard">GOO</a>
 </template>
 
 <script setup>
-import Base from "@/Layouts/Base.vue";
 </script>
