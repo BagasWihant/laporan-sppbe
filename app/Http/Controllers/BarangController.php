@@ -66,8 +66,25 @@ class BarangController extends Controller
 
     public function showAll(Request $request)
     {
-        $data = DB::table('barangs')->select(['id', 'nama', 'satuan', 'stok', 'harga'])->paginate(10);
+        // $start = isset($request->originalEvent['first']) ? $request->originalEvent['first'] : $request->first;
+        // $offset = isset($request->originalEvent['rows']) ? $request->originalEvent['rows'] : $request->rows;
+        $totalData = 0;
+        if($request->all() !== []){
+            $start = $request->originalEvent['first'] ?? $request->first;
+            $limit = $request->originalEvent['rows'] ?? $request->rows;
+            $search = $request->filters['nama']['value'] ;
+            $data = DB::table('barangs')->select(['id', 'nama', 'satuan', 'stok', 'harga'])->offset($start)->limit($limit)
+            ->when($search !== null, function ($query) use ($search) {
+                $query->where('nama', 'like', '%'.$search.'%');
+            })->get();
+            $totalData = DB::table('barangs')->when($search, function ($query) use ($search) {
+                $query->where('nama', 'like', '%'.$search.'%');
+            })->count();
+        }else{
+            $data = DB::table('barangs')->select(['id', 'nama', 'satuan', 'stok', 'harga'])->get();
+        }
         return response()->json([
+            'totalRecords' => $totalData,
             'data' => $data
         ]);
     }
